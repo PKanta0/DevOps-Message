@@ -12,11 +12,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run test
-        run: cd backend
+      - name: Run backend unit test
+        run: |
+            cd backend
             npm install
             npm test
-
+            
       - name: Build Backend Docker Image
         run: docker build -t backend-app ./backend
 
