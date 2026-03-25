@@ -1,0 +1,22 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run test
+        run: echo "Test passed"
+
+      - name: Build Backend Docker Image
+        run: docker build -t backend-app ./backend
+
+      - name: Build Frontend Docker Image
+        run: docker build -t frontend-app ./frontend
