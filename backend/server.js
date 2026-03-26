@@ -8,7 +8,7 @@ app.use(cors());
 
 app.get("/api/message", (req, res) => {
     res.json({
-        message: "Version 2"
+        message: "Version 1"
     });
 });
 
