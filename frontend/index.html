@@ -44,7 +44,9 @@
         </div>
     
         <script>
-            fetch("http://localhost:3000/api/message")
+            const backendUrl = `${window.location.protocol}//${window.location.hostname}:3000/api/message`;
+
+            fetch(backendUrl)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById("message").textContent = data.message;
