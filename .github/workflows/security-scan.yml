@@ -1,0 +1,47 @@
+name: Security Scan
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  trivy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build backend image
+        run: docker build -t devops-message-backend:scan ./backend
+
+      - name: Build frontend image
+        run: docker build -t devops-message-frontend:scan ./frontend
+
+      - name: Scan source and config
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: CRITICAL,HIGH,MEDIUM
+          format: table
+          exit-code: "0"
+
+      - name: Scan backend Docker image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: devops-message-backend:scan
+          severity: CRITICAL,HIGH,MEDIUM
+          format: table
+          exit-code: "0"
+
+      - name: Scan frontend Docker image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: devops-message-frontend:scan
+          severity: CRITICAL,HIGH,MEDIUM
+          format: table
+          exit-code: "0"

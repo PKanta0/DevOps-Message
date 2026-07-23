@@ -1,11 +1,6 @@
-FROM node:18 AS build
+FROM nginxinc/nginx-unprivileged:alpine
 
-WORKDIR /app
-COPY . .
+COPY index.html /usr/share/nginx/html/index.html
 
-FROM nginx:alpine
-
-COPY --from=build /app /usr/share/nginx/html
-
-EXPOSE 80
+EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]

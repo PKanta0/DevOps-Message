@@ -1,14 +1,16 @@
-FROM node:18 AS build
+FROM node:22-alpine AS build
 
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm ci --omit=dev
 COPY . .
 
-FROM node:18-slim
+FROM node:22-alpine
 
 WORKDIR /app
-COPY --from=build /app /app
+ENV NODE_ENV=production
+COPY --from=build --chown=node:node /app /app
+USER node
 
 EXPOSE 3000
 CMD ["node", "server.js"]
